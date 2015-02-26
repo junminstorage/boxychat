@@ -66,13 +66,13 @@ orm.initialize(config.orm, function (err, models) {
         // Load controllers
         app.controllers = {};
 
-        var controllerBuilder = require('./lib/controllerBuilder');
+        var ControllerBuilder = require('./lib/controllerBuilder');
         var controllerBuilders = {};
 
         _(controllers).each(function (controller, key) {
             controller.identity = key;
 
-            var builder = new controllerBuilder(app, controller);
+            var builder = new ControllerBuilder(app, controller);
             controllerBuilders[key] = builder;
             app.controllers[key] = controller;
             builder.buildActions();
@@ -91,7 +91,10 @@ orm.initialize(config.orm, function (err, models) {
     });
 
     server.listen(config.app.port, function () {
+        app.started = true;
         console.log(config.app.name + ' server listening on port ' + config.app.port);
     });
 
 });
+
+module.exports.app = app;
